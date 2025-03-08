@@ -11,14 +11,13 @@ export default function Productos() {
   const [loading, setLoading] = useState(true);
   const [mostrarSlider, setMostrarSlider] = useState(false);
 
-
   useEffect(() => {
     axios
       .get('https://deone.org/api/endpoints/get_products_with_images.php')
       .then((response) => {
         const productosConImagen = response.data.data.map((producto) => ({
           ...producto,
-          imagen_principal: producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0].nombre : null,
+          imagen_principal: producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0].url : imgnotfound,
         }));
         setProductos(productosConImagen);
         setLoading(false);
@@ -52,8 +51,9 @@ export default function Productos() {
       setCategoriaSeleccionada(idCategoria);
     }
   };
+
   const toggleSlider = () => {
-    setMostrarSlider(!mostrarSlider); // Alterna entre mostrar y ocultar el slider
+    setMostrarSlider(!mostrarSlider); 
   };
 
   return (
@@ -72,18 +72,19 @@ export default function Productos() {
           )}
         </button>
       </div>
-      <AnimatePresence>
 
+      <AnimatePresence>
         {mostrarSlider && (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             exit={{ opacity: 0, y: -50 }}
-            className="mt-4 flex md:flex-row flex-col overflow-x-auto gap-2  md:hidden" >
+            className="mt-4 flex md:flex-row flex-col overflow-x-auto gap-2  md:hidden"
+          >
             <button
               onClick={() => handleCategoriaSeleccionada('todos')}
-              className={`py-2 px-5 font-bold text-sm ${categoriaSeleccionada === null ? 'text-rose-400 border  ' : 'text-zinc-400'}`}
+              className={`py-2 px-5 font-bold text-sm ${categoriaSeleccionada === null ? 'text-rose-400 border' : 'text-zinc-400'}`}
             >
               Todos
             </button>
@@ -92,7 +93,7 @@ export default function Productos() {
                 key={categoria.id_categoria}
                 onClick={() => handleCategoriaSeleccionada(categoria.id_categoria)}
                 className={`py-2 px-5 font-bold text-sm ${categoriaSeleccionada === categoria.id_categoria
-                  ? 'text-rose-400 border '
+                  ? 'text-rose-400 border'
                   : 'text-zinc-400'
                   }`}
               >
@@ -102,13 +103,13 @@ export default function Productos() {
           </motion.div>
         )}
       </AnimatePresence>
+
       <div className="flex gap-10 py-10">
-        <div className="md:flex md:flex-row flex-col gap-5 justify-between hidden ">
+        <div className="md:flex md:flex-row flex-col gap-5 justify-between hidden">
           <div className="flex flex-col items-start gap-5">
             <button
               onClick={() => handleCategoriaSeleccionada('todos')}
-              className={`py-2 px-5 font-bold text-sm ${categoriaSeleccionada === null ? 'text-rose-400 border rounded-full ' : 'text-zinc-400'
-                }`}
+              className={`py-2 px-5 font-bold text-sm ${categoriaSeleccionada === null ? 'text-rose-400 border rounded-full' : 'text-zinc-400'}`}
             >
               Todos
             </button>
@@ -128,7 +129,7 @@ export default function Productos() {
         </div>
 
         <article>
-          <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+          <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
             {loading ? (
               <p>Cargando productos...</p>
             ) : (
@@ -172,7 +173,7 @@ export default function Productos() {
                                   <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"
                                   />
                                 </svg>
                               </button>
@@ -183,15 +184,7 @@ export default function Productos() {
                     </motion.div>
                   ))
                 ) : (
-                  <motion.p
-                    className="text-center w-full col-span-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    No se encontraron productos para esta categoría.
-                  </motion.p>
+                  <p>No se encontraron productos.</p>
                 )}
               </AnimatePresence>
             )}

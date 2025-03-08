@@ -18,8 +18,7 @@ export default function Carrito() {
     }, []);
 
     useEffect(() => {
-        if (telefono.length === 9) { // Asegúrate de que el teléfono tenga el formato correcto
-            // Llamada a la API para obtener los datos del usuario
+        if (telefono.length === 9) { 
             fetch(`https://deone.org/api/endpoints/get_user_by_phone.php?phone=${telefono}`)
                 .then(response => response.json())
                 .then(data => {
@@ -31,7 +30,6 @@ export default function Carrito() {
                         setDireccion(direccion || '');
                         setCiudad(ciudad || '');
                     } else {
-                        // Si no se encuentra el usuario, limpia los campos relacionados
                         setNombre('');
                         setApellido('');
                         setCorreo('');
@@ -43,14 +41,14 @@ export default function Carrito() {
                     console.error('Error al obtener los datos del usuario:', error);
                 });
         } else {
-            // Si el teléfono no tiene 9 dígitos, limpiar los campos
+           
             setNombre('');
             setApellido('');
             setCorreo('');
             setDireccion('');
             setCiudad('');
         }
-    }, [telefono]); // El efecto se ejecuta cada vez que el teléfono cambia
+    }, [telefono]); 
 
     const calcularTotal = (carrito) => {
         const totalCarrito = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
@@ -90,7 +88,13 @@ export default function Carrito() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
+        // Validar campos requeridos
+        if (!telefono || !nombre || !apellido || !correo || !direccion || !ciudad || carrito.length === 0) {
+            alert('Por favor, completa todos los campos requeridos y asegúrate de que el carrito no esté vacío.');
+            return;
+        }
+    
         const detalles = carrito.map((item) => ({
             id_producto: item.id,
             cantidad: item.cantidad,
@@ -98,7 +102,7 @@ export default function Carrito() {
             subtotal: item.precio * item.cantidad,
             descuento: 0.00,
         }));
-
+    
         const data = {
             telefono,
             nombre_usuario: nombre,
@@ -109,8 +113,7 @@ export default function Carrito() {
             id_metodo_pago: metodoPago,
             detalles,
         };
-
-        // Enviar los datos a la API
+    
         fetch('https://deone.org/api/endpoints/register_sale.php', {
             method: 'POST',
             headers: {
@@ -121,8 +124,8 @@ export default function Carrito() {
             .then(response => response.json())
             .then(result => {
                 console.log('Pedido enviado:', result);
-
-                // Vaciar el carrito y limpiar los campos del formulario
+    
+                // Limpiar el carrito y los campos solo si el pedido se envía correctamente
                 setCarrito([]);
                 localStorage.removeItem('carrito');
                 setTotal(0);
@@ -138,11 +141,17 @@ export default function Carrito() {
                 console.error('Error al enviar pedido:', error);
             });
     };
+    
 
     const handleRedirectWhatsApp = (e) => {
-        e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
-
-        // Enviar los datos al backend para registrar la compra
+        e.preventDefault();
+    
+        // Validar que los campos requeridos estén completos
+        if (!telefono || !nombre || !apellido || !correo || !direccion || !ciudad || carrito.length === 0) {
+            alert('Por favor, completa todos los campos requeridos y asegúrate de que el carrito no esté vacío.');
+            return;
+        }
+    
         const detalles = carrito.map((item) => ({
             id_producto: item.id,
             cantidad: item.cantidad,
@@ -150,7 +159,7 @@ export default function Carrito() {
             subtotal: item.precio * item.cantidad,
             descuento: 0.00,
         }));
-
+    
         const data = {
             telefono,
             nombre_usuario: nombre,
@@ -161,7 +170,7 @@ export default function Carrito() {
             id_metodo_pago: metodoPago,
             detalles,
         };
-
+    
         fetch('https://deone.org/api/endpoints/register_sale.php', {
             method: 'POST',
             headers: {
@@ -172,7 +181,7 @@ export default function Carrito() {
             .then(response => response.json())
             .then(result => {
                 console.log('Pedido enviado:', result);
-
+    
                 setCarrito([]);
                 localStorage.removeItem('carrito');
                 setTotal(0);
@@ -183,12 +192,11 @@ export default function Carrito() {
                 setCiudad('');
                 setTelefono('');
                 setMetodoPago(1);
-
-                // Crear el mensaje para WhatsApp
+    
                 const detallesWhatsApp = carrito.map(item => {
                     return `${item.nombre} (x${item.cantidad}) - S/${(item.precio * item.cantidad).toFixed(2)}`;
                 }).join('\n');
-
+    
                 const mensaje = `Hola, quiero realizar el siguiente pedido:\n\n` +
                     `Nombre: ${nombre} ${apellido}\n` +
                     `Correo: ${correo}\n` +
@@ -197,16 +205,15 @@ export default function Carrito() {
                     `Ciudad: ${ciudad}\n\n` +
                     `Detalles del pedido:\n${detallesWhatsApp}\n` +
                     `Total: S/${total.toFixed(2)}\n\n`;
-
-                // URL de WhatsApp
-                const whatsappUrl = `https://wa.me/51986262416?text=${encodeURIComponent(mensaje)}`;
-
+    
+                const whatsappUrl = `https://wa.me/51935874138?text=${encodeURIComponent(mensaje)}`;
                 window.open(whatsappUrl, '_blank');
             })
             .catch(error => {
                 console.error('Error al enviar pedido:', error);
             });
     };
+    
 
 
 
@@ -230,23 +237,23 @@ export default function Carrito() {
                                     </div>
 
                                     <div className="flex items-center gap-2">
-                                        <button
+                                        {/* <button
                                             onClick={() => handleDecrement(item.id)}
                                             className="bg-gray-200 text-gray-800 p-2 rounded-lg hover:bg-gray-300 transition duration-300"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                             </svg>
-                                        </button>
-                                        <span>{item.cantidad}</span>
-                                        <button
+                                        </button> */}
+                                        <span className='text-xl font-bold' >{item.cantidad}</span>
+                                        {/* <button
                                             onClick={() => handleIncrement(item.id)}
                                             className="bg-gray-200 text-gray-800 p-2 rounded-lg hover:bg-gray-300 transition duration-300"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                             </svg>
-                                        </button>
+                                        </button> */}
                                     </div>
 
                                     <button

@@ -18,7 +18,7 @@ export default function SectionProducto() {
             .then((response) => {
                 const productosConImagen = response.data.data.map((producto) => ({
                     ...producto,
-                    imagen_principal: producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0].nombre : null,
+                    imagen_principal: producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0].url : null,
                 }));
                 setProductos(productosConImagen);
                 setLoading(false);
@@ -53,11 +53,11 @@ export default function SectionProducto() {
     };
 
     const toggleSlider = () => {
-        setMostrarSlider(!mostrarSlider); // Alterna entre mostrar y ocultar el slider
+        setMostrarSlider(!mostrarSlider); 
     };
 
     return (
-        <section className="max-w-7xl m-auto ">
+        <section className="max-w-7xl m-auto py-20 ">
             <div className="flex md:flex-row flex-col gap-5 justify-between items-center">
                 <div className="md:flex gap-1 items-center  hidden">
                     <span className="text-4xl font-black opacity-15">Productos</span>

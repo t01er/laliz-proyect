@@ -31,10 +31,10 @@ export default function Inicio() {
             }
         }
     };
-    
+
     return (
         <>
-            {/* <Ofertas /> */}
+            <Ofertas />
             <header>
                 <div className="max-w-7xl m-auto relative">
                     <motion.div
@@ -43,7 +43,6 @@ export default function Inicio() {
                         animate="visible"
                         variants={staggerContainer}
                     >
-                        {/* Texto animado */}
                         <motion.div className="flex-1 flex gap-4 flex-col " variants={fadeInLeft}>
                             <h2 className="md:text-7xl text-5xl md:text-left text-left font-black text-rose-400 text-balance  md:p-0">
                                 ENCUENTRA TU MUEBLE PERFECTO
@@ -52,7 +51,7 @@ export default function Inicio() {
                                 Nuestro compromiso: calidad, diseño y satisfacción.
                             </p>
                             <div className="flex items-center md:justify-start justify-start  gap-4">
-                                <a className="border border-rose-200 py-2 px-10 rounded-full text-rose-400" href="">
+                                <a className="border border-rose-200 py-2 px-10 rounded-full text-rose-400" href="#">
                                     Ver Video
                                 </a>
                                 <a className="w-10 h-10 items-center flex justify-center rounded-full bg-white shadow-md" href="">
@@ -60,11 +59,16 @@ export default function Inicio() {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
                                     </svg>
                                 </a>
-                                <a className="text-zinc-500" href="">
+                                <a
+                                    href="https://wa.me/51925948034?text=Hola%20Muebles%20Laliz,%20estoy%20interesado%20en%20sus%20productos"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-zinc-500" >
                                     Contactar Ahora
                                 </a>
+
                             </div>
-                            <motion.div
+                            {/* <motion.div
                                 initial={{ opacity: 0, visibility: 'hidden' }}
                                 animate={{ opacity: 1, visibility: 'visible' }}
                                 transition={{ duration: 3 }}
@@ -115,7 +119,7 @@ export default function Inicio() {
                                 <div>
                                     <a className="border py-2 px-10 rounded-full text-sm text-rose-400" href="">Ver Mas</a>
                                 </div>
-                            </motion.div>
+                            </motion.div> */}
 
                         </motion.div>
 
@@ -125,7 +129,7 @@ export default function Inicio() {
                     </motion.div>
                 </div>
 
-                <div className="max-w-7xl m-auto px-4 md:px-0">
+                {/* <div className="max-w-7xl m-auto px-4 md:px-0">
                     <motion.div
                         className="flex items-center flex-wrap justify-center gap-20 my-20 text-xl text-zinc-500"
                         initial="hidden"
@@ -147,7 +151,7 @@ export default function Inicio() {
                             3M
                         </motion.span>
                     </motion.div>
-                </div>
+                </div> */}
             </header>
             <main>
                 {/* <section className="max-w-7xl m-auto my-20 ">
